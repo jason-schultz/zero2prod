@@ -43,8 +43,7 @@ jobs:
           command: rustc --version; cargo --version; rustup --version
       - run:
           name: Cache permission
-          command: |
-            sudo chown -R $(whoami):$(id -ng) /usr/local/cargo
+          command: sudo chown -R $(whoami):$(id -ng) /usr/local/cargo
       - restore_cache:
           keys:
             - v1-cargo-audit-{{ arch }}
