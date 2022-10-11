@@ -1,26 +1,21 @@
+use actix_web::dev::Server;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-// async fn greet(req: HttpRequest) -> impl Responder {
-//     let name = req.match_info().get("name").unwrap_or("World");
-
-//     format!("Hello {}!", &name)
-// }
+use std::net::TcpListener;
 
 // can remove _req: HttpRequest as we don't need it for this endpoint
 async fn health_check() -> impl Responder {
-    HttpResponse::Ok()
+    HttpResponse::Ok().finish()
 }
 
-// We need to makr 'run' as public
-// it is no longer a binary entrypoint, therefore we can mark it as async
-// without having to use any proc-macro incantation
-pub async fn run() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            // .route("/", web::get().to(greet))
-            // .route("/{name}", web::get().to(greet))
-            .route("/health_check", web::get().to(health_check))
-    })
-    .bind("127.0.0.1:8000")?
-    .run()
-    .await
+// Notice the different signature
+// We return `Server` on the happy path and we dropped the `async` keywrod
+// We have no .await call, so it is not needed anymore
+pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
+    let server = HttpServer::new(|| App::new().route("/health_check", web::get().to(health_check)))
+        // .bind(address)?
+        .listen(listener)?
+        .run();
+
+    // no .await here
+    Ok(server)
 }
