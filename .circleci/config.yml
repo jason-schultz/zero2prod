@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: cimg/rust:1.63.0
+      - image: cimg/rust:1.64.0
     environment:
       # Fail the build if there are warnings
       RUSTFLAGS: '-D warnings'
@@ -35,7 +35,7 @@ jobs:
 
   # security:
   #   docker:
-  #     - image: cimg/rust:1.63.0
+  #     - image: cimg/rust:1.64.0
   #   steps:
   #     - checkout
   #     - run:
@@ -60,7 +60,7 @@ jobs:
 
   format:
     docker:
-      - image: cimg/rust:1.63.0
+      - image: cimg/rust:1.64.0
     steps:
       - checkout
       - run:
@@ -75,7 +75,7 @@ jobs:
 
   lint:
     docker:
-      - image: cimg/rust:1.63.0
+      - image: cimg/rust:1.64.0
     steps:
       - checkout
       - run:
